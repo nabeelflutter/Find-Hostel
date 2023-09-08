@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "237749456251",
+    "project_id": "findhostel-7ff2d",
+    "storage_bucket": "findhostel-7ff2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237749456251:android:91cb907ed6f8e0eaa041de",
+        "android_client_info": {
+          "package_name": "com.example.practices"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237749456251-65thpq808mk47kvu2jb5b9tfs5q0nio4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.practices",
+            "certificate_hash": "dbd7b582b58c413bf9d6bd1ce3c5a3664e05869d"
+          }
+        },
+        {
+          "client_id": "237749456251-iaf60kt09a91q4ttjitiavhk047jahlp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAXTqVCMz33SAY2dw9UGe63_qtanzpaak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237749456251-iaf60kt09a91q4ttjitiavhk047jahlp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
