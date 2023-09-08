@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:ui';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:practices/views/showdetailspage.dart';
@@ -141,87 +142,103 @@ class _HomePageState extends State<HomePage> {
                       child: Hero(
                         transitionOnUserGestures: true,
                         tag: snapshot.data!.docs[index],
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                              color: Colors.teal, //<-- SEE HERE
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          elevation: 2,
-                          child: SizedBox(
-                            height: height * .40,
-                            width: width,
-                            // decoration: BoxDecoration(border: Border.all(color: Colors.teal)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Stack(
+                              alignment: Alignment.center,
                               children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    snapshot.data!.docs[index]
-                                        .get('image')
-                                        .toString(),
-                                    height: height * .30,
-                                    width: width,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Divider(
-                                    color: Colors.teal,
-                                  ),
-                                ),
                                 Padding(
-                                  padding: const EdgeInsets.all(3.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'Address :',
-                                            style:
-                                                TextStyle(color: Colors.teal),
-                                          ),
-                                          Text(
-                                            snapshot.data!.docs[index]
-                                                .get('hostelCity')
-                                                .toString(),
-                                            style: const TextStyle(
-                                                color: Colors.teal,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'Type: ',
-                                            style: TextStyle(
-                                                color: Colors.teal,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            snapshot.data!.docs[index]
-                                                .get('hostelType')
-                                                .toString(),
-                                            style: const TextStyle(
-                                                color: Colors.teal),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      snapshot.data!.docs[index]
+                                          .get('image')
+                                          .toString(),
+                                      height: height * .40,
+                                      width: width,
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: height * .001,
-                                )
+                                Positioned(
+                                  bottom: height*.05,
+                                  left: width*.05,
+                                  child: ClipRect(
+                                    child: BackdropFilter(
+                                      filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                                      child: Container(
+                                        decoration: new BoxDecoration(
+                                            color: Colors.grey.shade200.withOpacity(0.5)
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            children: [
+                                              const Text(
+                                                'Address :',
+                                                style:
+                                                TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                snapshot.data!.docs[index]
+                                                    .get('hostelCity')
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    color: Colors.black,
+                                                    ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: height*.05,
+                                  right: width*.05,
+
+                                  child: ClipRect(
+                                    child: BackdropFilter(
+                                      filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                                      child: Container(
+                                        decoration: new BoxDecoration(
+                                            color: Colors.grey.shade200.withOpacity(0.5)
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            children: [
+                                              const Text(
+                                                'Type: ',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                snapshot.data!.docs[index]
+                                                    .get('hostelType')
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
+
+
+                            SizedBox(
+                              height: height * .001,
+                            )
+                          ],
                         ),
                       ),
                     ),
@@ -246,7 +263,7 @@ class _HomePageState extends State<HomePage> {
 
   PreferredSize _appBar() {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(100),
+      preferredSize: const Size.fromHeight(150),
       child: Container(
         margin: const EdgeInsets.only(top: 5),
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -278,22 +295,25 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _topBar() {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            'FindHostel',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.teal.shade800, fontSize: 16),
+    return SizedBox(
+      height: 50,
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              'FindHostel',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black, fontSize: 20,fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _searchBox() {
     return SizedBox(
-      height: 35,
+      height: 45,
       child: TextFormField(
         keyboardType: TextInputType.name,
         textCapitalization: TextCapitalization.words,

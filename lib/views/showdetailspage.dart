@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-class ShowDetailsPage extends StatelessWidget {
+import 'package:carousel_slider/carousel_slider.dart';
+class ShowDetailsPage extends StatefulWidget {
   int index;
   String image;
   String name;
@@ -17,8 +18,17 @@ class ShowDetailsPage extends StatelessWidget {
    ShowDetailsPage({super.key,required this.discription,required this.nameH,required this.wifi,required this.index,required this.image,required this.name,required this.security,required this.bed,required this.parking,required this.water,required this.mess,required this.number,required this.city});
 
   @override
+  State<ShowDetailsPage> createState() => _ShowDetailsPageState();
+}
+
+class _ShowDetailsPageState extends State<ShowDetailsPage> {
+  int _current = 0;
+
+  final CarouselController _controller = CarouselController();
+
+  @override
   Widget build(BuildContext context) {
-    print('$index>>>>>>>>>>');
+    print('${widget.index}>>>>>>>>>>');
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -29,23 +39,33 @@ class ShowDetailsPage extends StatelessWidget {
           children: [
             Hero(
                 transitionOnUserGestures: true,
-                tag: index,
+                tag: widget.index,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                          color: Colors.teal, //<-- SEE HERE
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(image,height: height*.35 ,width: width,fit: BoxFit.fill,))),
+                  padding:  EdgeInsets.all(8.0),
+                child: CarouselSlider(
+                items: [
+                  Image.network(widget.image,height: height*.45 ,width: width,fit: BoxFit.fill,)
+                ],
+          carouselController: _controller,
+          options: CarouselOptions(
+              autoPlay: true,
+              enlargeCenterPage: true,
+              aspectRatio: 2.0,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              }),
+
+        ),
+
+                  // child: ClipRRect(
+                  //     borderRadius: BorderRadius.circular(10),
+                  //     child: Image.network(image,height: height*.35 ,width: width,fit: BoxFit.fill,)),
                 )),
-            const Divider(color: Colors.teal,),
-             const Padding(
-              padding: EdgeInsets.only(left: 17,top: 2,right: 8,bottom: 0),
+
+              Padding(
+              padding: EdgeInsets.only(left: 17,top: height*.05,right: 8,bottom: 0),
               child: Align(
                   alignment: Alignment.topLeft,
                   child: Card(
@@ -56,57 +76,79 @@ class ShowDetailsPage extends StatelessWidget {
                       ))),
             ),
            Padding(
-              padding: const EdgeInsets.only(left: 17,top: 8,right: 8,bottom: 8),
+              padding:  EdgeInsets.only(left: 17,top: height*.01,right: 8,bottom: 8),
               child: Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(discription,style: const TextStyle(color: Colors.teal,fontWeight: FontWeight.bold),),
+                    child: Text(widget.discription,style: const TextStyle(color: Colors.black),),
                   )),
             ),
-            const Divider(color: Colors.teal,),
-            ListTile(title: const Text('Owner Name',style: TextStyle(color: Colors.teal),),trailing: Text(name,style: const TextStyle(color: Colors.teal),),),
-            const Divider(color: Colors.teal,),
-            ListTile(
 
-              title: const Text('Phone Number',style: TextStyle(color: Colors.teal),),trailing: TextButton.icon(onPressed: () async{
+            Card(
+                color: Colors.teal,
+                elevation: 2,
+                child: ListTile(title: const Text('Owner Name',style: TextStyle(color: Colors.white),),trailing: Text(widget.name,style: const TextStyle(color: Colors.white),),)),
+            Card(
+              color: Colors.teal,
+              elevation: 2,
+              child: ListTile(
 
-                await FlutterPhoneDirectCaller.callNumber(number);
-            }, icon: const Icon(Icons.phone,color: Colors.teal,), label: Text(number,style: const TextStyle(color: Colors.teal),)),),
-            const Divider(color: Colors.teal,),
+                title: const Text('Phone Number',style: TextStyle(color: Colors.white),),trailing: TextButton.icon(onPressed: () async{
 
-            ListTile(title: const Text('Hostel Name',style: TextStyle(color: Colors.teal),),trailing: Text(nameH,style: const TextStyle(color: Colors.teal),),),
-            const Divider(color: Colors.teal,),
+                  await FlutterPhoneDirectCaller.callNumber(widget.number);
+              }, icon: const Icon(Icons.phone,color: Colors.white,), label: Text(widget.number,style: const TextStyle(color: Colors.white),)),),
+            ),
 
-            ListTile(title: const Text('Hostel City',style: TextStyle(color: Colors.teal),),trailing: Text(city,style: const TextStyle(color: Colors.teal),),),
-            const Divider(color: Colors.teal,),
+            Card(
+                color: Colors.teal,
+                elevation: 2,
+                child: ListTile(title: const Text('Hostel Name',style: TextStyle(color: Colors.white),),trailing: Text(widget.nameH,style: const TextStyle(color: Colors.white),),)),
 
-            ListTile(title: const Text('Mess',style: TextStyle(color: Colors.teal),),trailing: Text(mess,style: const TextStyle(color: Colors.teal),),),
-            const Divider(color: Colors.teal,),
+            Card(
+                color: Colors.teal,
+                elevation: 2,
+                child: ListTile(title: const Text('Hostel Address',style: TextStyle(color: Colors.white),),trailing: Text(widget.city,style: const TextStyle(color: Colors.white),),)),
 
-            ListTile(title: const Text('Security',style: TextStyle(color: Colors.teal),),trailing: Text(security,style: const TextStyle(color: Colors.teal),),),
-            const Divider(color: Colors.teal,),
+            Card(
+                color: Colors.teal,
+                elevation: 2,
+                child: ListTile(title: const Text('Mess',style: TextStyle(color: Colors.white),),trailing: Text(widget.mess,style: const TextStyle(color: Colors.white),),)),
 
-            ListTile(title: const Text('Filter Water',style: TextStyle(color: Colors.teal),),trailing: Text(water,style: const TextStyle(color: Colors.teal),),),
-            const Divider(color: Colors.teal,),
+            Card(
+                color: Colors.teal,
+                elevation: 2,
+                child: ListTile(title: const Text('Security',style: TextStyle(color: Colors.white),),trailing: Text(widget.security,style: const TextStyle(color: Colors.white),),)),
 
-            ListTile(title: const Text('Parking',style: TextStyle(color: Colors.teal),),trailing: Text(parking,style: const TextStyle(color: Colors.teal),),),
-            const Divider(color: Colors.teal,),
+            Card(
+                color: Colors.teal,
+                elevation: 2,
+                child: ListTile(title: const Text('Filter Water',style: TextStyle(color: Colors.white),),trailing: Text(widget.water,style: const TextStyle(color: Colors.white),),)),
 
-            ListTile(title: const Text('Bed System',style: TextStyle(color: Colors.teal),),trailing: Text(bed,style: const TextStyle(color: Colors.teal),),),
-            const Divider(color: Colors.teal,),
+            Card(
+                color: Colors.teal,
+                elevation: 2,
+                child: ListTile(title: const Text('Parking',style: TextStyle(color: Colors.white),),trailing: Text(widget.parking,style: const TextStyle(color: Colors.white),),)),
 
-            ListTile(title: const Text('Wifi',style: TextStyle(color: Colors.teal),),trailing: Text(wifi,style: const TextStyle(color: Colors.teal),),),
-            const Divider(color: Colors.teal,),
+            Card(
+                color: Colors.teal,
+                elevation: 2,
+                child: ListTile(title: const Text('Bed System',style: TextStyle(color: Colors.white),),trailing: Text(widget.bed,style: const TextStyle(color: Colors.white),),)),
+
+            Card(
+                color: Colors.teal,
+                elevation: 2,
+                child: ListTile(title: const Text('Wifi',style: TextStyle(color: Colors.white),),trailing: Text(widget.wifi,style: const TextStyle(color: Colors.white),),)),
 
           ],
         ),
       ),),);
 
   }
+
   PreferredSize _appBar() {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(50),
+      preferredSize: const Size.fromHeight(80),
       child: Container(
         margin: const EdgeInsets.only(top: 5),
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -114,7 +156,7 @@ class ShowDetailsPage extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              _topBar(name),
+              _topBar(widget.name),
               const SizedBox(height: 5),
             ],
           ),
@@ -137,16 +179,19 @@ class ShowDetailsPage extends StatelessWidget {
   }
 
   Widget _topBar(String name) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            name,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.teal.shade800, fontSize: 16),
+    return SizedBox(
+      height: 50,
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              name,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black, fontSize: 20,fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

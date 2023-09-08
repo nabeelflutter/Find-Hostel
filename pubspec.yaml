@@ -44,8 +44,9 @@ dependencies:
   cloud_firestore:
   image_picker:
   firebase_storage:
-  flutter_local_notifications:
-  flutter_notification_channel:
+  flutter_local_notifications: any
+  flutter_notification_channel: any
+  carousel_slider:
   get:
   fluttertoast:
   flutter_phone_direct_caller:

@@ -624,7 +624,7 @@ class _HostelDetailsPageState extends State<HostelDetailsPage> {
 
   PreferredSize _appBar(BuildContext context) {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(50),
+      preferredSize: const Size.fromHeight(80),
       child: Container(
         margin: const EdgeInsets.only(top: 5),
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -655,11 +655,17 @@ class _HostelDetailsPageState extends State<HostelDetailsPage> {
   }
 
   Widget _topBar(BuildContext context) {
-    return const Align(
-        alignment: Alignment.center,
-        child: Text(
-          'Add Information',
-          style: TextStyle(color: Colors.teal, fontWeight: FontWeight.bold),
-        ));
+    return SizedBox(
+      height: 50,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Add Information',
+            style: TextStyle(color: Colors.black, fontSize: 20,fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
   }
 }
