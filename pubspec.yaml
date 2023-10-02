@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.6 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -47,6 +47,7 @@ dependencies:
   flutter_local_notifications: any
   flutter_notification_channel: any
   carousel_slider:
+  google_sign_in:
   get:
   fluttertoast:
   flutter_phone_direct_caller:
@@ -56,6 +57,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_facebook_auth: ^6.0.1
 flutter_launcher_icons:
   android: "ic_launcher"
   ios: true

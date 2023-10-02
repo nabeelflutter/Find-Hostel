@@ -39,38 +39,19 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _searchText = TextEditingController();
   GlobalKey<ScaffoldState> scaffloadKey = GlobalKey<ScaffoldState>();
 
-  Stream<QuerySnapshot> getAllUser(
-      BuildContext context,) async* {
-    yield* FirebaseFirestore.instance
-        .collection('hostels').where('hostelname',arrayContains: _searchText.text).snapshots();
-  }
   // @override
   // void initState() {
   //   super.initState();
   //   getAllUser(context);
   // }
+  Future refresh () async{
+    setState(() {
+    });
+  }
   @override
   void initState() {
     super.initState();
     getToken();
-  }
-
-  Future<void> sendNotification() async {
-    var data = {
-      "to": "cZMufbHzSzu-PpX9oVLIm9:APA91bF4e2PydkYaPZKQiDFq9BRtU2SV_GURMRmEWwg0WRIrJMIRXBD8WxIRQEhCms8lDr9IWvKcdkfOdXul7dQ6iXCBrS0Cr-Hfiuzg5OCHwvk26_qztrUAgtbrmKh03b0nn-e-8C1M",
-      "notification": {
-        "title": "Find Hostel",
-        "body": "One new hostel edded",
-        "android_channel_id": "Find Hostel"
-      }
-    };
-    await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        body: jsonEncode(data),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.authorizationHeader:
-              'key = AAAAN1r4zXs:APA91bEjWvwHsuZ_A2nx-gxIOSvrb2ihsFlrh9Z7OHLMxPa7HRdwI0p__urvFdtv__QvAA8BpztpzWenshWGJK7QJhI1C8CFO8wpFxdkxoa574SWgLiOwOSeh7cxEBGAm2HhNzt0e5eY'
-        });
   }
 
   @override
@@ -80,184 +61,188 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
         appBar: _appBar(),
-        body: StreamBuilder(
-          stream: (name != "" && name != null)
-              ? FirebaseFirestore.instance
-                  .collection('hostels')
-                  .where("hostelCity", isEqualTo: name)
-                  .snapshots()
-              : FirebaseFirestore.instance.collection("hostels").snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ShowDetailsPage(
-                                  index: index,
-                                  image: snapshot.data!.docs[index]
-                                      .get('image')
-                                      .toString(),
-                                  name: snapshot.data!.docs[index]
-                                      .get('ownerName')
-                                      .toString(),
-                                  security: snapshot.data!.docs[index]
-                                      .get('security')
-                                      .toString(),
-                                  bed: snapshot.data!.docs[index]
-                                      .get('bed')
-                                      .toString(),
-                                  parking: snapshot.data!.docs[index]
-                                      .get('parking')
-                                      .toString(),
-                                  water: snapshot.data!.docs[index]
-                                      .get('water')
-                                      .toString(),
-                                  mess: snapshot.data!.docs[index]
-                                      .get('mess')
-                                      .toString(),
-                                  number: snapshot.data!.docs[index]
-                                      .get('ownerPhoneNumber')
-                                      .toString(),
-                                  city: snapshot.data!.docs[index]
-                                      .get('hostelCity')
-                                      .toString(),
-                                  wifi: snapshot.data!.docs[index]
-                                      .get('wifi')
-                                      .toString(),
-                                  nameH: snapshot.data!.docs[index]
-                                      .get('hostelName')
-                                      .toString(),
-                                  discription: snapshot.data!.docs[index]
-                                      .get('hostelDiscription')
-                                      .toString()),
-                            ));
-                      },
-                      child: Hero(
-                        transitionOnUserGestures: true,
-                        tag: snapshot.data!.docs[index],
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.network(
-                                      snapshot.data!.docs[index]
-                                          .get('image')
-                                          .toString(),
-                                      height: height * .40,
-                                      width: width,
-                                      fit: BoxFit.fill,
+        body: RefreshIndicator(
+          color: Colors.teal,
+          onRefresh: refresh,
+          child: StreamBuilder(
+            stream: (name != "" && name != null)
+                ? FirebaseFirestore.instance
+                    .collection('hostels')
+                    .where("hostelCity", isEqualTo: name)
+                    .snapshots()
+                : FirebaseFirestore.instance.collection("hostels").snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ShowDetailsPage(
+                                    index: index,
+                                    image: snapshot.data!.docs[index]
+                                        .get('image')
+                                        .toString(),
+                                    name: snapshot.data!.docs[index]
+                                        .get('ownerName')
+                                        .toString(),
+                                    security: snapshot.data!.docs[index]
+                                        .get('security')
+                                        .toString(),
+                                    bed: snapshot.data!.docs[index]
+                                        .get('bed')
+                                        .toString(),
+                                    parking: snapshot.data!.docs[index]
+                                        .get('parking')
+                                        .toString(),
+                                    water: snapshot.data!.docs[index]
+                                        .get('water')
+                                        .toString(),
+                                    mess: snapshot.data!.docs[index]
+                                        .get('mess')
+                                        .toString(),
+                                    number: snapshot.data!.docs[index]
+                                        .get('ownerPhoneNumber')
+                                        .toString(),
+                                    city: snapshot.data!.docs[index]
+                                        .get('hostelCity')
+                                        .toString(),
+                                    wifi: snapshot.data!.docs[index]
+                                        .get('wifi')
+                                        .toString(),
+                                    nameH: snapshot.data!.docs[index]
+                                        .get('hostelName')
+                                        .toString(),
+                                    discription: snapshot.data!.docs[index]
+                                        .get('hostelDiscription')
+                                        .toString()),
+                              ));
+                        },
+                        child: Hero(
+                          transitionOnUserGestures: true,
+                          tag: snapshot.data!.docs[index],
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        snapshot.data!.docs[index]
+                                            .get('image')
+                                            .toString(),
+                                        height: height * .40,
+                                        width: width,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Positioned(
-                                  bottom: height*.05,
-                                  left: width*.05,
-                                  child: ClipRect(
-                                    child: BackdropFilter(
-                                      filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                                      child: Container(
-                                        decoration: new BoxDecoration(
-                                            color: Colors.grey.shade200.withOpacity(0.5)
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            children: [
-                                              const Text(
-                                                'Address :',
-                                                style:
-                                                TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
-                                              ),
-                                              Text(
-                                                snapshot.data!.docs[index]
-                                                    .get('hostelCity')
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    color: Colors.black,
-                                                    ),
-                                              ),
-                                            ],
+                                  Positioned(
+                                    bottom: height*.05,
+                                    left: width*.05,
+                                    child: ClipRect(
+                                      child: BackdropFilter(
+                                        filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                                        child: Container(
+                                          decoration: new BoxDecoration(
+                                              color: Colors.grey.shade200.withOpacity(0.5)
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              children: [
+                                                const Text(
+                                                  'Address :',
+                                                  style:
+                                                  TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  snapshot.data!.docs[index]
+                                                      .get('hostelCity')
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.black,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Positioned(
-                                  bottom: height*.05,
-                                  right: width*.05,
+                                  Positioned(
+                                    bottom: height*.05,
+                                    right: width*.05,
 
-                                  child: ClipRect(
-                                    child: BackdropFilter(
-                                      filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                                      child: Container(
-                                        decoration: new BoxDecoration(
-                                            color: Colors.grey.shade200.withOpacity(0.5)
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            children: [
-                                              const Text(
-                                                'Type: ',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                              Text(
-                                                snapshot.data!.docs[index]
-                                                    .get('hostelType')
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                            ],
+                                    child: ClipRect(
+                                      child: BackdropFilter(
+                                        filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                                        child: Container(
+                                          decoration: new BoxDecoration(
+                                              color: Colors.grey.shade200.withOpacity(0.5)
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              children: [
+                                                const Text(
+                                                  'Type: ',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  snapshot.data!.docs[index]
+                                                      .get('hostelType')
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
 
 
-                            SizedBox(
-                              height: height * .001,
-                            )
-                          ],
+                              SizedBox(
+                                height: height * .001,
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              );
-            } else if (snapshot.hasError) {
-              return const Center(
-                child: Text(
-                  'Some thing went wrong',
-                  style: TextStyle(color: Colors.teal),
-                ),
-              );
-            }
+                    );
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return const Center(
+                  child: Text(
+                    'Some thing went wrong',
+                    style: TextStyle(color: Colors.teal),
+                  ),
+                );
+              }
 
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
         ));
   }
 

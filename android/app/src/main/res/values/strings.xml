@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">findhostel</string>
+    <string name="facebook_app_id">678512467522317</string>
+    <string name="fb_login_protocol_scheme">fb678512467522317</string>
+    <string name="facebook_client_token">23df338896d4dadb6a4d85c70d8e2c9d</string>
+</resources>

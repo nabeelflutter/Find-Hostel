@@ -553,6 +553,7 @@ class _HostelDetailsPageState extends State<HostelDetailsPage> {
                             'bed': bedValue == 0 ? 'Yes' : 'No',
                             'image': imageUrl.toString(),
                             'hostelName': hostalNameController.text,
+                            //'hostelCity' :FieldValue.arrayUnion([cityNameController.text.toString()]),
                             'ownerName': onwerNameController.text,
                             'ownerPhoneNumber': phoneNumberController.text,
                             'water': waterValue == 0 ? 'Yes' : 'No',
@@ -561,7 +562,7 @@ class _HostelDetailsPageState extends State<HostelDetailsPage> {
                           }).whenComplete(() async {
                             var data = {
                               "to":
-                                  'dryqSMIaTIWHrDReqzlMkr:APA91bHwADbVFlCwQyZRISGs3MbEiqqt9yR_aUW-i7RcjJlF2O921q82nr5kCbc-PTFclGYUVWi5-3WIGEKc-PuOMNV1M4UN8A269MOEqj1hWvSiKTWcrNGXqTs71Fx_WFWlSUMmCGgw'
+                                  'dr4spBaQShawwGsRBdSbJM:APA91bEGMzqxV9RmmyjqKqHPdfGL4r_-oPYsi3stsqvGShDJ0O3qYNplT61KRMZx9C4P6UqgdBZLt4BGY_JCGGqj-tL02wJIn_9Fszanqrv9yYalOWZmo_EFbK7TAbqblmGFAU63a7cW'
                             ,
                               "notification": {
                                 "title": "One new hostel edded",

@@ -38,11 +38,12 @@ class MyBottomNavigationBar extends StatelessWidget {
 
         body: screens[_screenindexprovider.currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
+        backgroundColor: Colors.teal.shade100,
+      //  type: BottomNavigationBarType.shifting,
         currentIndex: _screenindexprovider.currentIndex,
         elevation: 1.5,
-        selectedItemColor: Colors.teal.shade600,
-        unselectedItemColor: Colors.teal.shade400,
+        selectedItemColor: Colors.teal.shade900,
+        unselectedItemColor: Colors.teal,
         onTap: (index){
           if(index==1){
             final auth = FirebaseAuth.instance;

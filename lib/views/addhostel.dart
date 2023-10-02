@@ -18,6 +18,7 @@ class AddHostel extends StatefulWidget {
 class _AddHostelState extends State<AddHostel> {
   final user = FirebaseAuth.instance.currentUser;
   GlobalKey<ScaffoldState> scaffloadKey = GlobalKey<ScaffoldState>();
+
   Stream<QuerySnapshot> getCurrentUser(BuildContext context) async* {
     yield* FirebaseFirestore.instance
         .collection('hostels')
@@ -56,47 +57,71 @@ class _AddHostelState extends State<AddHostel> {
       transitionDuration: const Duration(milliseconds: 300),
     );
   }
+
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
   }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-        drawer:  Drawer(
-          child:  Column(children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20))),
-              curve: Curves.bounceInOut,
-              padding: EdgeInsets.zero,
-              child: UserAccountsDrawerHeader(
-                  arrowColor: Colors.white,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.white, Colors.teal.shade300],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20))
-                  ),
-                  currentAccountPicture:  CircleAvatar(
-                    backgroundColor: Colors.teal.shade100,
-                    child: Icon(Icons.person,size: 30,color: Colors.teal,),
-                    ),
-                  margin: EdgeInsets.zero,
-                  accountName:  Text(user!.email.toString()??''),
-                  accountEmail: const Text('')),
-            ),
-            ListTile(
-              onTap: (){
-                _signOut().then((value) {
-                  Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => MyApp(),), (route) => false);
-                });
-              },
-              title: Text('LogOut'),trailing: Icon(Icons.logout),)
-          ],),
+        drawer: Drawer(
+          child: Column(
+            children: [
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20))),
+                curve: Curves.bounceInOut,
+                padding: EdgeInsets.zero,
+                child: UserAccountsDrawerHeader(
+                    arrowColor: Colors.white,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.white, Colors.teal.shade300],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20))),
+                    currentAccountPicture: user!.photoURL == null
+                        ? CircleAvatar(
+                            backgroundColor: Colors.teal.shade100,
+                            child: Icon(
+                              Icons.person,
+                              size: 30,
+                              color: Colors.teal,
+                            ),
+                          )
+                        : CircleAvatar(
+                      backgroundImage: NetworkImage(user!.photoURL.toString()),
+                            backgroundColor: Colors.teal.shade100,
+
+                          ),
+                    margin: EdgeInsets.zero,
+                    accountName: Text(user!.email.toString() ?? ''),
+                    accountEmail: const Text('')),
+              ),
+              ListTile(
+                onTap: () {
+                  _signOut().then((value) {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyApp(),
+                        ),
+                        (route) => false);
+                  });
+                },
+                title: Text('LogOut'),
+                trailing: Icon(Icons.logout),
+              )
+            ],
+          ),
         ),
         key: scaffloadKey,
         // appBar: _appBar(context),
@@ -121,7 +146,7 @@ class _AddHostelState extends State<AddHostel> {
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Colors.teal,),
               );
             } else if (snapshot.hasError) {
               return const Center(
@@ -159,26 +184,31 @@ class _AddHostelState extends State<AddHostel> {
                               ),
                             ),
                             Positioned(
-
                               top: 12,
                               right: 12,
                               child: ClipRect(
                                 child: BackdropFilter(
-                                  filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                                  filter: new ImageFilter.blur(
+                                      sigmaX: 10.0, sigmaY: 10.0),
                                   child: Container(
                                     decoration: new BoxDecoration(
-                                        color: Colors.grey.shade200.withOpacity(0.5)
-                                    ),
+                                        color: Colors.grey.shade200
+                                            .withOpacity(0.5)),
                                     child: PopupMenuButton(
                                       itemBuilder: (context) => [
                                         PopupMenuItem<String>(
                                           onTap: () {
-                                            Future.delayed(Duration(seconds: 0),() => Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                              return UpdatePage(
-                                                index: snapshot.data!.docs[index].id,
-                                              );
-                                            },)) );
-
+                                            Future.delayed(
+                                                Duration(seconds: 0),
+                                                () => Navigator.push(context,
+                                                        MaterialPageRoute(
+                                                      builder: (context) {
+                                                        return UpdatePage(
+                                                          index: snapshot.data!
+                                                              .docs[index].id,
+                                                        );
+                                                      },
+                                                    )));
                                           },
                                           child: const Icon(
                                             Icons.edit,
@@ -189,57 +219,60 @@ class _AddHostelState extends State<AddHostel> {
                                           onTap: () {
                                             Future.delayed(
                                                 const Duration(seconds: 0),
-                                                    () => showGeneralDialog(
-                                                  context: context,
-                                                  pageBuilder: (ctx, a1, a2) {
-                                                    return Container();
-                                                  },
-                                                  transitionBuilder:
-                                                      (ctx, a1, a2, child) {
-                                                    return Transform.rotate(
-                                                      angle: math.radians(
-                                                          a1.value * 360),
-                                                      child: AlertDialog(
-                                                        title: const Text(
-                                                            "Delete Hostel"),
-                                                        content: const Text(
-                                                            "Are you sure you want to delete?"),
-                                                        actions: <Widget>[
-
-                                                          TextButton(
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                    context)
-                                                                    .pop();
-                                                              },
-                                                              child: const Text(
-                                                                  "Cancle")),
-                                                          TextButton(
-                                                              onPressed: () {
-                                                                FirebaseFirestore
-                                                                    .instance
-                                                                    .collection(
-                                                                    'hostels')
-                                                                    .doc(snapshot
-                                                                    .data!
-                                                                    .docs[
-                                                                index]
-                                                                    .id)
-                                                                    .delete();
-                                                                Navigator.of(
-                                                                    context)
-                                                                    .pop();
-                                                              },
-                                                              child: const Text(
-                                                                  "Yes")),
-                                                        ],
-                                                      ),
-                                                    );
-                                                  },
-                                                  transitionDuration:
-                                                  const Duration(
-                                                      milliseconds: 300),
-                                                ));
+                                                () => showGeneralDialog(
+                                                      context: context,
+                                                      pageBuilder:
+                                                          (ctx, a1, a2) {
+                                                        return Container();
+                                                      },
+                                                      transitionBuilder:
+                                                          (ctx, a1, a2, child) {
+                                                        return Transform.rotate(
+                                                          angle: math.radians(
+                                                              a1.value * 360),
+                                                          child: AlertDialog(
+                                                            title: const Text(
+                                                                "Delete Hostel"),
+                                                            content: const Text(
+                                                                "Are you sure you want to delete?"),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  },
+                                                                  child: const Text(
+                                                                      "Cancle")),
+                                                              TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    FirebaseFirestore
+                                                                        .instance
+                                                                        .collection(
+                                                                            'hostels')
+                                                                        .doc(snapshot
+                                                                            .data!
+                                                                            .docs[index]
+                                                                            .id)
+                                                                        .delete();
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                          "Yes")),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      },
+                                                      transitionDuration:
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  300),
+                                                    ));
                                             // showDialog(
                                             //   context: context,
                                             //   builder: (ctx) => AlertDialog(
@@ -273,23 +306,25 @@ class _AddHostelState extends State<AddHostel> {
                               ),
                             ),
                             Positioned(
-                              bottom: height*.05,
-                              left: width*.05,
+                              bottom: height * .05,
+                              left: width * .05,
                               child: ClipRect(
                                 child: BackdropFilter(
-                                  filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                                  filter: new ImageFilter.blur(
+                                      sigmaX: 10.0, sigmaY: 10.0),
                                   child: Container(
                                     decoration: new BoxDecoration(
-                                        color: Colors.grey.shade200.withOpacity(0.5)
-                                    ),
+                                        color: Colors.grey.shade200
+                                            .withOpacity(0.5)),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
                                         children: [
                                           const Text(
                                             'Address :',
-                                            style:
-                                            TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                           Text(
                                             snapshot.data!.docs[index]
@@ -307,16 +342,16 @@ class _AddHostelState extends State<AddHostel> {
                               ),
                             ),
                             Positioned(
-                              bottom: height*.05,
-                              right: width*.05,
-
+                              bottom: height * .05,
+                              right: width * .05,
                               child: ClipRect(
                                 child: BackdropFilter(
-                                  filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                                  filter: new ImageFilter.blur(
+                                      sigmaX: 10.0, sigmaY: 10.0),
                                   child: Container(
                                     decoration: new BoxDecoration(
-                                        color: Colors.grey.shade200.withOpacity(0.5)
-                                    ),
+                                        color: Colors.grey.shade200
+                                            .withOpacity(0.5)),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
@@ -343,7 +378,6 @@ class _AddHostelState extends State<AddHostel> {
                             ),
                           ],
                         ),
-
                         SizedBox(
                           height: height * .001,
                         )
@@ -397,7 +431,10 @@ class _AddHostelState extends State<AddHostel> {
             onTap: () {
               scaffloadKey.currentState!.openDrawer();
             },
-            child:  Icon(Icons.menu,color: Colors.teal,)),
+            child: Icon(
+              Icons.menu,
+              color: Colors.teal,
+            )),
         IconButton(
             onPressed: () {
               Navigator.pushAndRemoveUntil(
@@ -413,8 +450,7 @@ class _AddHostelState extends State<AddHostel> {
               size: 25,
             )),
         ElevatedButton.icon(
-            style:
-                ElevatedButton.styleFrom(backgroundColor: Colors.teal),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
             onPressed: () {
               Navigator.push(
                   context,

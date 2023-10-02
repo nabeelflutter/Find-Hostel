@@ -97,7 +97,7 @@ class _ShowDetailsPageState extends State<ShowDetailsPage> {
                 title: const Text('Phone Number',style: TextStyle(color: Colors.white),),trailing: TextButton.icon(onPressed: () async{
 
                   await FlutterPhoneDirectCaller.callNumber(widget.number);
-              }, icon: const Icon(Icons.phone,color: Colors.white,), label: Text(widget.number,style: const TextStyle(color: Colors.white),)),),
+              }, icon:  Icon(Icons.phone,color: Colors.green.shade300,), label: Text(widget.number,style: const TextStyle(color: Colors.white),)),),
             ),
 
             Card(
@@ -113,32 +113,86 @@ class _ShowDetailsPageState extends State<ShowDetailsPage> {
             Card(
                 color: Colors.teal,
                 elevation: 2,
-                child: ListTile(title: const Text('Mess',style: TextStyle(color: Colors.white),),trailing: Text(widget.mess,style: const TextStyle(color: Colors.white),),)),
+                child: ListTile(title: const Text('Mess',style: TextStyle(color: Colors.white),),trailing: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: Center(child: widget.mess == 'Yes'?Text('✔',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),):Text('X',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),),
+                    height: 80,width: 40,decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(10),
+                    color: widget.mess == 'Yes'?Colors.green:Colors.red
+                  ),),
+                ),)),
 
             Card(
                 color: Colors.teal,
                 elevation: 2,
-                child: ListTile(title: const Text('Security',style: TextStyle(color: Colors.white),),trailing: Text(widget.security,style: const TextStyle(color: Colors.white),),)),
+                child: ListTile(title: const Text('Security',style: TextStyle(color: Colors.white),),trailing: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: Center(child: widget.security == 'Yes'?Text('✔',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),):Text('X',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),),
+                    height: 80,width: 40,decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(10),
+                      color: widget.security == 'Yes'?Colors.green:Colors.red
+                  ),),
+                ),)),
 
             Card(
                 color: Colors.teal,
                 elevation: 2,
-                child: ListTile(title: const Text('Filter Water',style: TextStyle(color: Colors.white),),trailing: Text(widget.water,style: const TextStyle(color: Colors.white),),)),
+                child: ListTile(title: const Text('Filter Water',style: TextStyle(color: Colors.white),),trailing: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: Center(child: widget.water == 'Yes'?Text('✔',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),):Text('X',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),),
+                    height: 80,width: 40,decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(10),
+                      color: widget.water == 'Yes'?Colors.green:Colors.red
+                  ),),
+                ),)),
 
             Card(
                 color: Colors.teal,
                 elevation: 2,
-                child: ListTile(title: const Text('Parking',style: TextStyle(color: Colors.white),),trailing: Text(widget.parking,style: const TextStyle(color: Colors.white),),)),
+                child: ListTile(title: const Text('Parking',style: TextStyle(color: Colors.white),),trailing: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: Center(child: widget.parking == 'Yes'?Text('✔',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),):Text('X',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),),
+                    height: 80,width: 40,decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(10),
+                      color: widget.parking == 'Yes'?Colors.green:Colors.red
+                  ),),
+                ),)),
 
             Card(
                 color: Colors.teal,
                 elevation: 2,
-                child: ListTile(title: const Text('Bed System',style: TextStyle(color: Colors.white),),trailing: Text(widget.bed,style: const TextStyle(color: Colors.white),),)),
+                child: ListTile(title: const Text('Bed System',style: TextStyle(color: Colors.white),),trailing:Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: Center(child: widget.bed == 'Yes'?Text('✔',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),):Text('X',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),),
+                    height: 80,width: 40,decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(10),
+                      color: widget.bed == 'Yes'?Colors.green:Colors.red
+                  ),),
+                ),)),
 
             Card(
                 color: Colors.teal,
                 elevation: 2,
-                child: ListTile(title: const Text('Wifi',style: TextStyle(color: Colors.white),),trailing: Text(widget.wifi,style: const TextStyle(color: Colors.white),),)),
+                child: ListTile(title: const Text('Wifi',style: TextStyle(color: Colors.white),),trailing: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: Center(child: widget.wifi == 'Yes'?Text('✔',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),):Text('X',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),),
+                    height: 80,width: 40,decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(10),
+                      color: widget.wifi == 'Yes'?Colors.green:Colors.red
+                  ),),
+                ),)),
 
           ],
         ),
@@ -148,7 +202,7 @@ class _ShowDetailsPageState extends State<ShowDetailsPage> {
 
   PreferredSize _appBar() {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(80),
+      preferredSize: const Size.fromHeight(60),
       child: Container(
         margin: const EdgeInsets.only(top: 5),
         padding: const EdgeInsets.symmetric(horizontal: 20),
